@@ -1,0 +1,114 @@
+<div class="tab-pane fade show active" id="employees" role="tabpanel">
+    <div class="row">
+        <div class="col-6">
+            <h2>Employees</h2>
+        </div>
+        <div class="col-6 text-end">
+            <button class="btn btn-success" (click)="isFormVisible.set(true)">Add New</button>
+        </div>
+    </div>
+    @if(isFormVisible()){
+    <form class="mb-4">
+        <div class="row">
+            <div class="col-md-6">
+                <label for="employeeName" class="form-label">Employee Name</label>
+                <input type="text" class="form-control" [(ngModel)]="employeeObj.employeeName" name="employeeName" id="employeeName"
+                    placeholder="Enter employee name">
+            </div>
+            <div class="col-md-6">
+                <label for="contactno" class="form-label">Contact Number</label>
+                <input type="text" class="form-control" [(ngModel)]="employeeObj.contactNo" name="contactno" id="contactno"
+                    placeholder="Enter Conatct Number ">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label for="Email" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" [(ngModel)]="employeeObj.emailId" id="email" placeholder="Enter Email ">
+            </div>
+            <div class="col-md-3">
+                <label for="deptID" class="form-label">Parent DepartMent</label>
+                <select  class="form-select" name="parentDeptId" [(ngModel)]="parentDeptId" (change)="OnParentDeptChange()">
+
+                    <option selected>Select DepartMent</option>
+                    @for (item of parentDeptList();track $index){
+                    <option [value]="item.departmentId">{{item.departmentName}}</option>
+                    }
+                </select>
+
+            </div>
+            <div class="col-md-3">
+                <label for="deptID" class="form-label">Child DepartMent</label>
+                <select  name="deptId" [(ngModel)]="employeeObj.deptId" class="form-select">
+                    <option selected>Select DepartMent</option>
+                    @for (item of ChildDeptList();track $index){
+                    <option [value]="item.childDeptId">{{item.departmentName}}</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="password" class="form-label">Password </label>
+                <input type="password" class="form-control" [(ngModel)]="employeeObj.password" name="Password" id="Password" placeholder="Enter Password ">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="Role" class="form-label">Role</label>
+                <input type="text" class="form-control" [(ngModel)]="employeeObj.role" name="Role"  placeholder="Enter Role ">
+            </div>
+            <div class="col-md-6">
+                <label for="gender" class="form-label">Gender</label>
+                <select id="gender" class="form-select" [(ngModel)]="employeeObj.gender" name="gender">
+                    <option selected>Select gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary mt-3" (click)="onUpdate()">Submit</button>
+        <button class="btn btn-success mt-3 " (click)="isFormVisible.set(false)">Close</button>
+    </form>
+    }
+
+</div>
+
+<h3>Employee List</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Sr  Id</th>
+            <th>Name</th>
+            <th>Conatct No</th>
+            <th>Email</th>
+            <th>DepartMent</th>
+            <th>Role</th>
+            <th>Gender</th>
+            <th>Actions</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @for(item of EmployeetList();track $index){
+            <tr>
+                <td>{{$index+1}}</td>
+                <td>{{item.employeeName}}</td>
+                <td>{{item.contactNo}}</td>
+                <td>{{item.emailId}}</td>
+                <td>{{item.deptId}}</td>
+                <td>{{item.role}}</td>
+                <td>{{item.gender}}</td>
+                <td>{{item.employeeName}}</td>
+                <td>
+                    @if(this.employeeObj.employeeId==0){
+                        <button type="button" class="btn btn-primary mt-3" (click)="onEdit(item)">Save Employee</button>
+                    }@else{
+                        <button type="button" class="btn btn-primary mt-3" (click)="onDelete(item.employeeId)">Update Employee</button>
+                    }
+                    
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
